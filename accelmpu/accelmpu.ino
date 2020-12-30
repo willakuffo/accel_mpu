@@ -45,13 +45,13 @@ previous_time = current_time;
 current_time = millis();
 elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
 
-Serial.print("t:");
-Serial.print((uint32_t)current_time);
-Serial.print(" dt:");
-Serial.print(elapsed_time);
+//Serial.print("t:");
+//Serial.print((uint32_t)current_time);
+//Serial.print("  dt:");
+//Serial.print(elapsed_time);
 #ifdef ULTRASONIC
 SonarSensor(XTRIG, XECHO);
-Serial.print(" X:");
+/*Serial.print("   X:");
 Serial.print(distance);
 
 SonarSensor(YTRIG, YECHO);
@@ -60,62 +60,64 @@ Serial.print(distance);
 
 SonarSensor(ZTRIG, ZECHO);
 Serial.print(" Z:");
-Serial.print(distance);
+Serial.print(distance);*/
 #endif
 
 #ifdef ACCEL_AS_MS
-accel_as_ms();
-Serial.print(" acc: ");
-Serial.print(axp); Serial.print("\t"); 
-Serial.print(ayp); Serial.print("\t");
-Serial.print(azp); Serial.print("\t");
+accel_as_ms();/*
+Serial.print("   acc:");
+Serial.print(axp); Serial.print("  "); 
+Serial.print(ayp); Serial.print("  ");
+Serial.print(azp); Serial.print("  ");*/
 #endif
 
 #ifdef ACCEL_AS_RAW
 accel_as_raw();
-Serial.print("\tAR:\t");
-Serial.print(ax); Serial.print("\t"); 
-Serial.print(ay); Serial.print("\t");
-Serial.print(az); Serial.println("\t");
+Serial.print("  AR:");
+Serial.print(ax); Serial.print(" "); 
+Serial.print(ay); Serial.print(" ");
+Serial.print(az); Serial.println(" ");
 #endif
 
 #ifdef ACCEL_ANGLE
 angle_from_accel();
-Serial.print("\tANG_acc:");
-Serial.print(pitch);Serial.print("\t");
-Serial.print(roll);Serial.print("\t");
-Serial.println(yaw);
+Serial.print("   ANG_acc:");
+Serial.print(pitch);Serial.print(" ");
+Serial.print(roll);Serial.print(" ");
+Serial.print(yaw);
 #endif
 
 #ifdef GYRO_AS_RAW
 gyro_as_raw();
-Serial.print("\tGR ");
-Serial.print(gx); Serial.print("\t"); 
-Serial.print(gy); Serial.print("\t");
-Serial.print(gz); Serial.print("\t");
+Serial.print("  GR:");
+Serial.print(gx); Serial.print(" "); 
+Serial.print(gy); Serial.print(" ");
+Serial.print(gz); Serial.print(" ");
 #endif
 
 #ifdef GYRO_AS_DEG
-/*gyro_as_deg();
-Serial.print("\tgyro(deg/s): ");
-Serial.print(gxp); Serial.print("\t"); 
-Serial.print(gyp); Serial.print("\t");
-Serial.print(gzp); Serial.print("\t");*/
+//gyro rates deg/s
+gyro_as_deg();/*
+Serial.print("   gyro(deg/s): ");
+Serial.print(gxp); Serial.print("  "); 
+Serial.print(gyp); Serial.print("  ");
+Serial.print(gzp); Serial.print("  ");*/
 #endif
 
 #ifdef GYRO_ANGLE
 angle_from_gyro(elapsed_time);
-/*
+
 Serial.print(elapsed_time);Serial.print("\t");
 Serial.print(gyro_angle_pitch);Serial.print("\t");
 Serial.print(gyro_angle_roll);Serial.print("\t");
-Serial.println(gyro_angle_yaw);*/
+Serial.print(gyro_angle_yaw);
 #endif
 
 #ifdef COMPLIMETARY_FILTER
 complimentary_angles();
-Serial.print(COM_PITCH);Serial.print("\t");
-Serial.print(COM_ROLL);Serial.print("\t");
+Serial.print("   COMP:");
+Serial.print(COM_PITCH);Serial.print("  ");
+Serial.print(COM_ROLL);Serial.print("  ");
 Serial.println(COM_YAW);
 #endif
 }

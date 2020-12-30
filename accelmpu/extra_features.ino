@@ -21,7 +21,7 @@ void angle_from_accel(){
  void complimentary_angles(){
   //complimentary angles, 96% gyro, 4% accel
   COM_PITCH = 0.96* gyro_angle_pitch + 0.04*pitch;
-  COM_PITCH = 0.96* gyro_angle_roll + 0.04*roll;
+  COM_ROLL = 0.96* gyro_angle_roll + 0.04*roll;
   COM_YAW = gyro_angle_yaw;
   }
   
