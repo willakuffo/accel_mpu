@@ -51,3 +51,10 @@ void gyro_as_deg(){
         gzp = (gzp/GYRO_SENSITIVITY);
           
   }
+
+
+void temperature(){
+  tmp = mpu.getTemperature();
+  tmp = tmp/340+36.53;
+  
+  }

@@ -13,7 +13,8 @@
 
 int16_t ax, ay, az, gx, gy, gz; //collect raw gyro and accel values as global
 float axp, ayp, azp;//processed accel m/s values as global
-int16_t gxp, gyp, gzp; //collect processed gyro deg/s values as global
+float gxp, gyp, gzp; //collect processed gyro deg/s values as global
+int16_t tmp;
 
 bool mpu_ready  = false; //is mpu ready?
 
@@ -22,5 +23,6 @@ void accel_as_ms(); ///accel m/s
 void gyro_as_deg(); //gyro deg/s angle rates
 void gyro_as_raw(); //gyro raw vals
 void mpu_setup(); //set up mpu6050 on addr 0x68
+void temperature();//get temp from mpu
 
 #endif
