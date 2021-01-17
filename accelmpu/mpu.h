@@ -6,9 +6,9 @@
 #define GRAVITY 9.81
 
 //gyro offsets
-#define GYRO_OFFSET_X 0 
-#define GYRO_OFFSET_Y -2
-#define GYRO_OFFSET_Z 1
+float GYRO_OFFSET_X; 
+float GYRO_OFFSET_Y;
+float GYRO_OFFSET_Z;
 
 
 int16_t ax, ay, az, gx, gy, gz; //collect raw gyro and accel values as global
@@ -24,5 +24,6 @@ void gyro_as_deg(); //gyro deg/s angle rates
 void gyro_as_raw(); //gyro raw vals
 void mpu_setup(); //set up mpu6050 on addr 0x68
 void temperature();//get temp from mpu
+void gyro_offset_callibrate(int);//callibrate gyro offsets
 
 #endif

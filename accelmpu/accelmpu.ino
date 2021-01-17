@@ -17,7 +17,18 @@ void setup() {
  Serial.begin(9600);
  mpu_setup();
  ultrasonic_3d_setup();
- Serial.println(mpu_ready? "MPU connection true":"mpu connection failure");
+ Serial.println(mpu_ready ?"MPU connection true":"mpu connection failure");
+ if (mpu_ready){
+  Serial.println("callibrating gyros...");
+  gyro_offset_callibrate(1000);
+
+  Serial.print("GYRO_OFFSET_X:");Serial.print(GYRO_OFFSET_X);
+  Serial.print("GYRO_OFFSET_Y:");Serial.print(GYRO_OFFSET_Y);
+  Serial.print("GYRO_OFFSET_Z:");Serial.println(GYRO_OFFSET_Z);
+  Serial.println("_GYRO callibration complete_");
+  }
+  delay(1000);
+ 
  
 }
 
@@ -57,7 +68,7 @@ accel_as_ms();
 Serial.print("\tacc:");
 Serial.print(axp); Serial.print("  "); 
 Serial.print(ayp); Serial.print("  ");
-Serial.print(azp); Serial.print("  ");
+Serial.print(azp); Serial.println("  ");
 #endif
 #endif
 

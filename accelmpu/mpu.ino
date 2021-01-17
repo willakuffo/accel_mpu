@@ -58,3 +58,22 @@ void temperature(){
   tmp = tmp/340+36.53;
   
   }
+
+
+ void gyro_offset_callibrate(int sample){
+    float sx = 0;
+    float sy = 0; 
+    float sz = 0;
+    
+  for(int i = 0;i<sample;i++){//sum sample rates
+    gyro_as_deg();
+    sx += gxp;
+    sy += gyp ;
+    sz += gzp;
+    } //find mean offset rates
+    GYRO_OFFSET_X = sx/sample;
+    GYRO_OFFSET_Y = sy/sample;
+    GYRO_OFFSET_Z = sz/sample;
+    //calc mean offset rate
+  
+  }
