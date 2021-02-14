@@ -18,6 +18,12 @@ int16_t tmp;
 
 bool mpu_ready  = false; //is mpu ready?
 
+float gyro_rate_ymax = 0;
+float gyro_rate_ymin = 0;
+float gyro_rate_xmax = 0;
+float gyro_rate_xmin = 0;
+
+
 void accel_as_raw(); //accel raw
 void accel_as_ms(); ///accel m/s
 void gyro_as_deg(); //gyro deg/s angle rates

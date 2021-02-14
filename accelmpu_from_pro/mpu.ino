@@ -12,7 +12,7 @@ void mpu_setup(){
  mpu.setSleepEnabled(false);
  mpu.setFullScaleAccelRange(0); // 0=> +-250deg/s ; 1=> +-500deg/s ; 2=> +-1000deg/s ; 3=> 2000deg/s
  mpu.setFullScaleGyroRange(0);  // 0=> +-2g ; 1=> +-4g ; 2=> +-8g ; 3=> +-16g
-
+ mpu.setDLPFMode(6);
  mpu_ready = mpu.testConnection();
 }
 
@@ -64,16 +64,22 @@ void temperature(){
     float sx = 0;
     float sy = 0; 
     float sz = 0;
+    //max and minimum still rates
+   
     
   for(int i = 0;i<sample;i++){//sum sample rates
     gyro_as_deg();
     sx += gxp;
     sy += gyp ;
     sz += gzp;
+
+    gyro_rate_ymax = max(gyp,gyro_rate_ymax);gyro_rate_ymin = min(gyp,gyro_rate_ymin);
+    gyro_rate_xmax = max(gxp,gyro_rate_xmax);gyro_rate_xmin = min(gxp,gyro_rate_xmin);
     } //find mean offset rates
     GYRO_OFFSET_X = sx/sample;
     GYRO_OFFSET_Y = sy/sample;
     GYRO_OFFSET_Z = sz/sample;
     //calc mean offset rate
+   
   
   }

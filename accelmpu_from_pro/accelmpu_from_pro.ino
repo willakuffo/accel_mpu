@@ -14,19 +14,30 @@ float current_time = 0,previous_time = 0;
 float elapsed_time = 0;
 
 void setup() {
+  
  Serial.begin(9600);
  mpu_setup();
  ultrasonic_3d_setup();
  Serial.println(mpu_ready ?"MPU connection true":"mpu connection failure");
  if (mpu_ready){
   Serial.println("callibrating gyros...");
-  gyro_offset_callibrate(1000);
+  gyro_offset_callibrate(10000);
 
+  Serial.print("xmax->");Serial.println(gyro_rate_xmax);
+  Serial.print("xmin->");Serial.println(gyro_rate_xmin);
+  Serial.print("ymax->");Serial.print(gyro_rate_ymax);Serial.print("ymin->");Serial.println(gyro_rate_ymin);
   Serial.print("GYRO_OFFSET_X:");Serial.print(GYRO_OFFSET_X);
   Serial.print("GYRO_OFFSET_Y:");Serial.print(GYRO_OFFSET_Y);
   Serial.print("GYRO_OFFSET_Z:");Serial.println(GYRO_OFFSET_Z);
   Serial.println("_GYRO callibration complete_");
   }
+
+  #ifdef TRAVEL
+  Serial.println("Getting Starting Point (avgx,avgy,avgz)");
+  inital_plane_distance();
+  Serial.print("Starting point:(avgx,avgy,avgz)");Serial.print("(");Serial.print(avgx);Serial.print(", ");
+  Serial.print(avgy);Serial.print(", ");Serial.print(avgz);Serial.println(")");
+  #endif 
   delay(1000);
  
  
@@ -38,27 +49,70 @@ previous_time = current_time;
 current_time = millis();
 elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
 #ifdef PRINT_TIME
-Serial.print("t:");
-Serial.print((uint32_t)current_time);
-Serial.print("  dt:");
-Serial.print(elapsed_time);
+  Serial.print("t:");
+  Serial.print((uint32_t)current_time);
+  Serial.print("  dt:");
+  Serial.print(elapsed_time);
 #endif
 
 #ifdef ULTRASONIC
+  SonarSensor(XTRIG, XECHO);
+  #ifdef TRAVEL
+    travel_dist(distance, avgx);
+    #ifdef PRINT_TRAVEL
+    Serial.print("\t");Serial.print(travel);    
+    #endif
+  #endif
+  #ifdef PRINT_ULTRASONIC
+    Serial.print("\tX:");
+    Serial.print(distance);
+  #endif
+
+
+  SonarSensor(YTRIG, YECHO);
+  #ifdef TRAVEL
+    travel_dist(distance, avgy);
+    #ifdef PRINT_TRAVEL
+    Serial.print("\t");Serial.print(travel);    
+    #endif
+  #endif
+
+  #ifdef PRINT_ULTRASONIC  
+    Serial.print("\tY:");
+    Serial.print(distance);
+  #endif
+
+
+  SonarSensor(ZTRIG, ZECHO);
+  #ifdef TRAVEL
+    travel_dist(distance, avgz);
+    #ifdef PRINT_TRAVEL
+    Serial.print("\t");Serial.print(travel);    
+    #endif
+  #endif
+  
+  #ifdef PRINT_ULTRASONIC
+    Serial.print("\tZ:");
+    Serial.print(distance);
+  #endif
+#endif
+
+
+#ifdef UNANGLED_POS
 SonarSensor(XTRIG, XECHO);
-#ifdef PRINT_ULTRASONIC
-Serial.print("\tX:");
-Serial.print(distance);
+#ifdef PRINT_UNANGLED_POS
+unangled_position(distance,2);
+Serial.print("\tuX:");Serial.print(unangled_pos);
 #endif
-#ifdef PRINT_ULTRASONIC
+#ifdef PRINT_UNANGLED_POS
 SonarSensor(YTRIG, YECHO);
-Serial.print(" Y:");
-Serial.print(distance);
+unangled_position(distance,2);
+Serial.print("\tuY:");Serial.print(unangled_pos);
 #endif
-#ifdef PRINT_ULTRASONIC
+#ifdef PRINT_UNANGLED_POS
 SonarSensor(ZTRIG, ZECHO);
-Serial.print(" Z:");
-Serial.print(distance);
+unangled_position(distance,2);
+Serial.print("\tuZ:");Serial.print(unangled_pos);
 #endif
 #endif
 
@@ -88,7 +142,7 @@ angle_from_accel();
 Serial.print("\tANG_acc:");
 Serial.print(pitch);Serial.print(" ");
 Serial.print(roll);Serial.print(" ");
-Serial.print(yaw);
+//Serial.print(yaw);
 #endif
 #endif
 
@@ -124,7 +178,7 @@ Serial.print(gyro_angle_yaw);
 
 #ifdef COMPLIMETARY_FILTER
 complimentary_angles();
-#ifdef PRINT_COMP;
+#ifdef PRINT_COMP
 Serial.print("\tCOMP:");
 Serial.print(COM_PITCH);Serial.print("  ");
 Serial.print(COM_ROLL);Serial.print("  ");
@@ -139,4 +193,5 @@ Serial.print("\ttmp:");
 Serial.println(tmp);
 #endif
 #endif
+
 }
