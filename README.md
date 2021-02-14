@@ -54,8 +54,8 @@ DEPENDENCY:`ACCEL_ANGLE`->[`ACCEL_AS_MS`], `GYRO_ANGLE`->[`GYRO_AS_DEG`]
 * `TEMP` uncomment to read temperature in celcius
 `DEPENDENCY`: None
 `PRINT_TEMP` print output of temp
-                                                */
+                                                
 * `TRAVEL` read travel from starting point from x,y,z planes (avgx,avgy,avgz). avg is the the average distance from plane x,y, or z
- DEPENDENCY: `ULTRASONIC`
+ `DEPENDENCY:` `ULTRASONIC`
 `PRINT_TRAVEL` print output of travel
 `NB:Last feature should have println`
