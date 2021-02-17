@@ -58,4 +58,9 @@ DEPENDENCY:`ACCEL_ANGLE`->[`ACCEL_AS_MS`], `GYRO_ANGLE`->[`GYRO_AS_DEG`]
 * `TRAVEL` read travel from starting point from x,y,z planes (avgx,avgy,avgz). avg is the the average distance from plane x,y, or z
  `DEPENDENCY:` `ULTRASONIC`
 `PRINT_TRAVEL` print output of travel
+
+* `IMU_DIST_VEL` compute 3-axis velocity and 3-axis position
+`DEPENDENCY:` `ACCEL_AS_MS`
+`PRINT_IMU_DIST_VEL` print IMU_DIST_VEL output
+
 `NB:Last feature should have println`

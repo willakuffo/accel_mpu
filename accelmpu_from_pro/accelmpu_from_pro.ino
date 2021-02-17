@@ -58,7 +58,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
 #ifdef ULTRASONIC
   SonarSensor(XTRIG, XECHO);
   #ifdef TRAVEL
-    travel_dist(distance, avgx);
+    travel_dist_sonar(distance, avgx);
     #ifdef PRINT_TRAVEL
     Serial.print("\t");Serial.print(travel);    
     #endif
@@ -71,7 +71,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
 
   SonarSensor(YTRIG, YECHO);
   #ifdef TRAVEL
-    travel_dist(distance, avgy);
+    travel_dist_sonar(distance, avgy);
     #ifdef PRINT_TRAVEL
     Serial.print("\t");Serial.print(travel);    
     #endif
@@ -85,7 +85,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
 
   SonarSensor(ZTRIG, ZECHO);
   #ifdef TRAVEL
-    travel_dist(distance, avgz);
+    travel_dist_sonar(distance, avgz);
     #ifdef PRINT_TRAVEL
     Serial.print("\t");Serial.print(travel);    
     #endif
@@ -122,7 +122,7 @@ accel_as_ms();
 Serial.print("\tacc:");
 Serial.print(axp); Serial.print("  "); 
 Serial.print(ayp); Serial.print("  ");
-Serial.print(azp); Serial.println("  ");
+Serial.print(azp); Serial.print("  ");
 #endif
 #endif
 
@@ -191,6 +191,14 @@ temperature();
 #ifdef PRINT_TEMP
 Serial.print("\ttmp:");
 Serial.println(tmp);
+#endif
+#endif
+
+#ifdef IMU_DIST_VEL
+IMU_vel_dist(elapsed_time);
+#ifdef PRINT_IMU_DIST_VEL
+Serial.print(" vel: ");Serial.print(IMU_vel_x);Serial.print(" ");Serial.print(IMU_vel_y);Serial.print(" ");Serial.print(IMU_vel_z);
+Serial.print(" dist: ");Serial.print(IMU_dist_x);Serial.print(" ");Serial.print(IMU_dist_y);Serial.print(" ");Serial.println(IMU_dist_z);
 #endif
 #endif
 

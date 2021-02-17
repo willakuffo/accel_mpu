@@ -41,14 +41,15 @@ void inital_plane_distance(){
     for(int i = 0;i<500;i++){
         SonarSensor(XTRIG,XECHO); avgx += distance;
         SonarSensor(YTRIG,YECHO); avgy += distance;
-        SonarSensor(ZTRIG,ZECHO); avgz += distance;  
+        SonarSensor(ZTRIG,ZECHO); avgz += distance; 
+       // Serial.print(avgx);Serial.print(" ");Serial.print(avgy);Serial.print(" ");Serial.println(avgz); 
       }
     avgx = avgx/500;
     avgy = avgy/500;
     avgz = avgz/500;
     }
 
-void travel_dist(int plane_distance,int avg){
+void travel_dist_sonar(int plane_distance,int avg){
    travel = plane_distance - avg;
 
 }
@@ -72,3 +73,35 @@ void travel_dist(int plane_distance,int avg){
       }
       
       }
+
+
+void IMU_vel_dist(float elapsed_time){
+  //currently using processed nonlinear accelrations
+  //calc velociety (single time integral) and position (double time integral) from IMU
+  //initial velocity IMU velocites / previous velocities at time t-1 (x,y,z)
+  static float previous_vel_x = 0;
+  static float previous_vel_y = 0;
+  static float previous_vel_z = 0;
+
+  //initial IMU positions with respect to starting point ->(avgx,avgy,avgz)
+  static float initial_dist_x = 0;
+  static float initial_dist_y = 0;
+  static float initial_dist_z = 0;
+ //instantaneous velocity and change in distance within sampled time
+  //calculate current velocity at time t -> v = u+at
+  IMU_vel_x = previous_vel_x + axp*elapsed_time;
+  IMU_vel_y = previous_vel_y + ayp*elapsed_time;
+  IMU_vel_z = previous_vel_z + (azp+GRAVITY)*elapsed_time; //normalize z-axis gravity. IMU is inverted so default g = -ve, therefore add to norm
+
+  //calculate current IMU position at time t with respect to starting point -> (avgx,avgy,avgz) -> s = ut+0.5at^2
+  IMU_dist_x += previous_vel_x*elapsed_time + 0.5*axp*pow(elapsed_time,2);
+  IMU_dist_y += previous_vel_y*elapsed_time + 0.5*ayp*pow(elapsed_time,2);
+  IMU_dist_z += previous_vel_z*elapsed_time + 0.5*(azp+ GRAVITY)*pow(elapsed_time,2);
+
+  //update previous velocities
+  previous_vel_x = IMU_vel_x;
+  previous_vel_y = IMU_vel_y;
+  previous_vel_z = IMU_vel_z;
+
+  
+}
