@@ -60,7 +60,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
   #ifdef TRAVEL
     travel_dist_sonar(distance, avgx);
     #ifdef PRINT_TRAVEL
-    Serial.print("\t");Serial.print(travel);    
+    Serial.print("\t[x]:");Serial.print(travel);    
     #endif
   #endif
   #ifdef PRINT_ULTRASONIC
@@ -73,7 +73,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
   #ifdef TRAVEL
     travel_dist_sonar(distance, avgy);
     #ifdef PRINT_TRAVEL
-    Serial.print("\t");Serial.print(travel);    
+    Serial.print(" [y]:");Serial.print(travel);    
     #endif
   #endif
 
@@ -87,7 +87,7 @@ elapsed_time = (current_time- previous_time)/1000; //get loop time (sample time)
   #ifdef TRAVEL
     travel_dist_sonar(distance, avgz);
     #ifdef PRINT_TRAVEL
-    Serial.print("\t");Serial.print(travel);    
+    Serial.print(" [z]:");Serial.print(travel);    
     #endif
   #endif
   
@@ -119,7 +119,7 @@ Serial.print("\tuZ:");Serial.print(unangled_pos);
 #ifdef ACCEL_AS_MS
 accel_as_ms();
 #ifdef PRINT_ACCEL_AS_MS
-Serial.print("\tacc:");
+Serial.print("\tacc[m/s]:");
 Serial.print(axp); Serial.print("  "); 
 Serial.print(ayp); Serial.print("  ");
 Serial.print(azp); Serial.print("  ");
@@ -139,7 +139,7 @@ Serial.print(az); Serial.println(" ");
 #ifdef ACCEL_ANGLE
 angle_from_accel();
 #ifdef PRINT_ACCEL_ANGLE
-Serial.print("\tANG_acc:");
+Serial.print("\tANGacc:");
 Serial.print(pitch);Serial.print(" ");
 Serial.print(roll);Serial.print(" ");
 //Serial.print(yaw);
@@ -169,9 +169,9 @@ Serial.print(gzp); Serial.print("  ");
 #ifdef GYRO_ANGLE
 angle_from_gyro(elapsed_time);
 #ifdef PRINT_GYRO_ANGLE
-Serial.print("\t");
-Serial.print(gyro_angle_pitch);Serial.print("\t");
-Serial.print(gyro_angle_roll);Serial.print("\t");
+Serial.print("\tANGgyro");
+Serial.print(gyro_angle_pitch);Serial.print(" ");
+Serial.print(gyro_angle_roll);Serial.print(" ");
 Serial.print(gyro_angle_yaw);
 #endif
 #endif
@@ -182,7 +182,7 @@ complimentary_angles();
 Serial.print("\tCOMP:");
 Serial.print(COM_PITCH);Serial.print("  ");
 Serial.print(COM_ROLL);Serial.print("  ");
-Serial.println(COM_YAW);
+Serial.print(COM_YAW);
 #endif
 #endif
 
@@ -190,16 +190,23 @@ Serial.println(COM_YAW);
 temperature();
 #ifdef PRINT_TEMP
 Serial.print("\ttmp:");
-Serial.println(tmp);
+Serial.print(tmp);
 #endif
 #endif
 
 #ifdef IMU_DIST_VEL
 IMU_vel_dist(elapsed_time);
 #ifdef PRINT_IMU_DIST_VEL
-Serial.print(" vel: ");Serial.print(IMU_vel_x);Serial.print(" ");Serial.print(IMU_vel_y);Serial.print(" ");Serial.print(IMU_vel_z);
-Serial.print(" dist: ");Serial.print(IMU_dist_x);Serial.print(" ");Serial.print(IMU_dist_y);Serial.print(" ");Serial.println(IMU_dist_z);
+Serial.print("\tvel: ");Serial.print(IMU_vel_x);Serial.print(" ");Serial.print(IMU_vel_y);Serial.print(" ");Serial.print(IMU_vel_z);
+Serial.print("\tdist: ");Serial.print(IMU_dist_x);Serial.print(" ");Serial.print(IMU_dist_y);Serial.print(" ");Serial.println(IMU_dist_z);
 #endif
 #endif
-
+/*
+#ifdef LINEAR_ACC
+linear_acc();
+#ifdef PRINT_LINEAR_ACC
+Serial.print("ln: ");Serial.print(l_acx);Serial.print(" ");Serial.print(l_acy);Serial.print(" ");Serial.println(l_acz);
+#endif
+#endif
+*/
 }

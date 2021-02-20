@@ -2,6 +2,6 @@
     "programmer": "AVRISP mkII",
     "board": "arduino:avr:nano",
     "configuration": "cpu=atmega328old",
-    "port": "COM10",
-    "sketch": "accelmpu.ino"
+    "port": "COM9",
+    "sketch": "accelmpu_from_pro.ino"
 }

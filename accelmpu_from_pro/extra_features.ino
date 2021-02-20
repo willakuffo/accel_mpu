@@ -4,6 +4,7 @@
 
 void angle_from_accel(){
   //euler angles
+  //pitch is along y-axis of IMU, roll is along x-axis (orientation on uav)
   pitch = atan2(ayp, sqrt(pow(axp, 2) + pow(azp, 2))) * RAD_TO_DEG; 
   roll = atan2(axp, sqrt(pow(ayp, 2) + pow(azp, 2))) * RAD_TO_DEG; 
   
@@ -53,26 +54,26 @@ void travel_dist_sonar(int plane_distance,int avg){
    travel = plane_distance - avg;
 
 }
- /* void recallibrate_gyro_x(){
-    //recallibrate when accelerometer is in long term, less rates in axis
-    if ((gxp<gyro_rate_xmax) and (gxp>gyro_rate_xmin)){gyro_angle_pitch = pitch;Serial.print("rp**");} // recallibrate pitch
-    }
-   void recallibrate_gyro_y(){
-        if((gyp<gyro_rate_ymax)and(gyp>gyro_rate_ymin)){gyro_angle_roll = roll;Serial.print("r**");}//recallibrate roll
+/* void recallibrate_gyro_x(){
+//recallibrate when accelerometer is in long term, less rates in axis
+if ((gxp<gyro_rate_xmax) and (gxp>gyro_rate_xmin)){gyro_angle_pitch = pitch;Serial.print("rp**");} // recallibrate pitch
+}
+void recallibrate_gyro_y(){
+  if((gyp<gyro_rate_ymax)and(gyp>gyro_rate_ymin)){gyro_angle_roll = roll;Serial.print("r**");}//recallibrate roll
 
-    }*/
+}*/
 
-    void unangled_position(int16_t pos, uint8_t whichangle){
-      switch(whichangle){
-      case 1://use complimentary filter angles
-        unangled_pos = pos*cos(COM_PITCH/(RAD_TO_DEG))*cos(COM_ROLL/(RAD_TO_DEG))*cos(COM_YAW/(RAD_TO_DEG));
-        break;
-      case 2: //use accel angles
-        unangled_pos = pos*cos(pitch/(RAD_TO_DEG))*cos(roll/(RAD_TO_DEG))*cos(gyro_angle_yaw/(RAD_TO_DEG));
-        break;
-      }
-      
-      }
+void unangled_position(int16_t pos, uint8_t whichangle){
+  switch(whichangle){
+  case 1://use complimentary filter angles
+    unangled_pos = pos*cos(COM_PITCH/(RAD_TO_DEG))*cos(COM_ROLL/(RAD_TO_DEG))*cos(COM_YAW/(RAD_TO_DEG));
+    break;
+  case 2: //use accel angles
+    unangled_pos = pos*cos(pitch/(RAD_TO_DEG))*cos(roll/(RAD_TO_DEG))*cos(gyro_angle_yaw/(RAD_TO_DEG));
+    break;
+  }
+  
+  }
 
 
 void IMU_vel_dist(float elapsed_time){
@@ -96,7 +97,7 @@ void IMU_vel_dist(float elapsed_time){
   //calculate current IMU position at time t with respect to starting point -> (avgx,avgy,avgz) -> s = ut+0.5at^2
   IMU_dist_x += previous_vel_x*elapsed_time + 0.5*axp*pow(elapsed_time,2);
   IMU_dist_y += previous_vel_y*elapsed_time + 0.5*ayp*pow(elapsed_time,2);
-  IMU_dist_z += previous_vel_z*elapsed_time + 0.5*(azp+ GRAVITY)*pow(elapsed_time,2);
+  IMU_dist_z += previous_vel_z*elapsed_time + 0.5*(azp+GRAVITY)*pow(elapsed_time,2);
 
   //update previous velocities
   previous_vel_x = IMU_vel_x;
@@ -105,3 +106,22 @@ void IMU_vel_dist(float elapsed_time){
 
   
 }
+
+/*
+void linear_acc(){
+  //use complimentary filter angles to compute linear acc -> 4% accel angle, 96% gyro angle
+  //accel angle itself is affected by the  linear component of acc since its comes from the accelerometers
+  //therefore is accelerometer accelerates, angle is affected 
+  // but the comp filter will only be affected by the magnitude of fraction component of thehe accel's contribution
+  //to the angle
+
+
+  //compute true acc along the reference frame's axes (x,y,z) when quadcoptor pitched or is rolled
+  l_acx = axp*cos(COM_PITCH/RAD_TO_DEG);
+  l_acy = ayp*cos(COM_ROLL/RAD_TO_DEG);
+  //for z remove gravity and resolve about pitch and roll-> occurs in both axes
+  //g is added because of IMU orientation (upside down)
+  l_acz = (azp+GRAVITY)*cos(COM_PITCH/RAD_TO_DEG)*cos(COM_ROLL/RAD_TO_DEG); 
+
+
+}*/

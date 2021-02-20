@@ -26,7 +26,7 @@ void accel_as_ms(){
   
         axp = mpu.getAccelerationX();
         ayp = mpu.getAccelerationY();
-        azp = mpu.getAccelerationZ();
+        azp = mpu.getAccelerationZ();//-ve because IMU is upside down (make z +ve)
         
         axp = (axp/ACCEL_SENSITIVITY)*GRAVITY;
         ayp = (ayp/ACCEL_SENSITIVITY)*GRAVITY;
