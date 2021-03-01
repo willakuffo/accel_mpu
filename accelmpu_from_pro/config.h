@@ -43,7 +43,7 @@ DEPENDENCY: None                                                        */
 therefore dependent on GYRO_AS_DEG. Use with GYRO_AS_DEG, therefore uncomment GYRO_AS_DEG
 DEPENDENCY: GYRO_AS_DEG                                                       */
 #define GYRO_ANGLE //read gyro angles in degrees dependent on GYRO_AS_DEG
-//#define PRINT_GYRO_ANGLE //print output of GYRO_ANGLE 
+#define PRINT_GYRO_ANGLE //print output of GYRO_ANGLE 
 
 /*This is a complimentary filter using 96% of GYRO angles and 4% of ACCEL angles. GYRO is not reliable in long term but in short term.
 ACCEL is reliable in long term but not in short term. Removes noise and smoothens out the angle signal. Best of both worlds :)
@@ -53,8 +53,8 @@ DEPENDENCY:ACCEL_ANGLE->[ACCEL_AS_MS], GYRO_ANGLE->[GYRO_AS_DEG]                
 
 /*uncomment to read temperature in celcius
 DEPENDENCY: None                                                        */
-#define TEMP
-#define PRINT_TEMP //print output of temp
+//#define TEMP
+//#define PRINT_TEMP //print output of temp
 
 /*uncomment to read travel from starting point (avgx,avgy,avgz)
 DEPENDENCY: ULTRASONIC                                                 */
