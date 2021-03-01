@@ -83,3 +83,26 @@ void temperature(){
    
   
   }
+
+
+ void acc_mean_filter_callibrate(int sample){
+    float sax = 0;
+    float say = 0; 
+    float saz = 0;
+    //max and minimum still rates
+    
+  for(int i = 0;i<sample;i++){//sum sample rates
+    accel_as_ms();
+    sax += axp;
+    say += ayp ;
+    saz += azp;
+
+    } //find mean offset rates
+    ACCEL_MEAN_X = sax/sample;
+    ACCEL_MEAN_Y = say/sample;
+    ACCEL_MEAN_Z = saz/sample;
+    //calc mean offset accel  
+  
+  
+  
+  }

@@ -22,7 +22,6 @@ void setup() {
  if (mpu_ready){
   Serial.println("callibrating gyros...");
   gyro_offset_callibrate(10000);
-
   Serial.print("xmax->");Serial.println(gyro_rate_xmax);
   Serial.print("xmin->");Serial.println(gyro_rate_xmin);
   Serial.print("ymax->");Serial.print(gyro_rate_ymax);Serial.print("ymin->");Serial.println(gyro_rate_ymin);
@@ -30,6 +29,14 @@ void setup() {
   Serial.print("GYRO_OFFSET_Y:");Serial.print(GYRO_OFFSET_Y);
   Serial.print("GYRO_OFFSET_Z:");Serial.println(GYRO_OFFSET_Z);
   Serial.println("_GYRO callibration complete_");
+  
+  
+  acc_mean_filter_callibrate(10000);
+  Serial.println("Callibrating accelerometer mean filters...");
+  Serial.print("ACCEL_MEAN_X:");Serial.print(ACCEL_MEAN_X);
+  Serial.print("ACCEL_MEAN_Y:");Serial.print(ACCEL_MEAN_Y);
+  Serial.print("ACCEL_MEAN_Z:");Serial.println(ACCEL_MEAN_Z);
+  Serial.println("_ACCEL callibration complete_");
   }
 
   #ifdef TRAVEL
@@ -124,6 +131,10 @@ Serial.print(unangled_pos);
 
 #ifdef ACCEL_AS_MS
 accel_as_ms();
+axp = axp-ACCEL_MEAN_X;
+ayp = ayp-ACCEL_MEAN_Y;
+azp = azp-(ACCEL_MEAN_Z+GRAVITY);//+ because IMU is upside downnn
+
 #ifdef PRINT_ACCEL_AS_MS
 //Serial.print("\tacc[m/s]:");
 Serial.print(axp); Serial.print(" "); //fn[5] 
