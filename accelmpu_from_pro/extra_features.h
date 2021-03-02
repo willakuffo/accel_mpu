@@ -18,6 +18,10 @@ float IMU_dist_x = 0, IMU_dist_y = 0, IMU_dist_z = 0; //current IMU positions wi
 
 float IMU_vel_x = 0,IMU_vel_y = 0,IMU_vel_z = 0; ////current IMU velocities at time t
 
+float chng_velx, chng_vely,chng_velz; //3-axis magnitude of IMU change in velocity
+float chng_distx, chng_disty,chng_distz; //3-axis magnitude of IMU change in distance
+
+
 //float l_acx, l_acy,l_acz; //3-axis linear acceleration
 
 

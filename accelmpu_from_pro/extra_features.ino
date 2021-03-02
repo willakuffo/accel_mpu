@@ -85,9 +85,15 @@ void IMU_vel_dist(float elapsed_time){
   static float previous_vel_z = 0;
 
   //initial IMU positions with respect to starting point ->(avgx,avgy,avgz)
-  static float initial_dist_x = 0;
-  static float initial_dist_y = 0;
-  static float initial_dist_z = 0;
+  static float previous_dist_x = 0;
+  static float previous_dist_y = 0;
+  static float previous_dist_z = 0;
+
+  //assign previous IMU dist
+  previous_dist_x = IMU_dist_x;
+  previous_dist_y = IMU_dist_y;
+  previous_dist_z = IMU_dist_z;
+  
  //instantaneous velocity and change in distance within sampled time
   //calculate current velocity at time t -> v = u+at
   IMU_vel_x = previous_vel_x + axp*elapsed_time;
@@ -98,6 +104,16 @@ void IMU_vel_dist(float elapsed_time){
   IMU_dist_x += previous_vel_x*elapsed_time + 0.5*axp*pow(elapsed_time,2);
   IMU_dist_y += previous_vel_y*elapsed_time + 0.5*ayp*pow(elapsed_time,2);
   IMU_dist_z += previous_vel_z*elapsed_time + 0.5*(azp+GRAVITY)*pow(elapsed_time,2);
+
+  //3-axis  magnitude chnage in velocity
+  chng_velx = IMU_vel_x - previous_vel_x;
+  chng_vely = IMU_vel_y - previous_vel_y;
+  chng_velz = IMU_vel_z - previous_vel_z;
+
+  //calc 3-axis magnitude IMU change in distance
+  chng_distx = IMU_dist_x - previous_dist_x;
+  chng_disty = IMU_dist_y - previous_dist_y;
+  chng_distz = IMU_dist_z - previous_dist_z;
 
   //update previous velocities
   previous_vel_x = IMU_vel_x;
@@ -119,8 +135,6 @@ void linear_acc(){
   //compute true acc along the reference frame's axes (x,y,z) when quadcoptor pitched or is rolled
   l_acx = axp*cos(COM_PITCH/RAD_TO_DEG);
   l_acy = ayp*cos(COM_ROLL/RAD_TO_DEG);
-  //for z remove gravity and resolve about pitch and roll-> occurs in both axes
-  //g is added because of IMU orientation (upside down)
   l_acz = (azp+GRAVITY)*cos(COM_PITCH/RAD_TO_DEG)*cos(COM_ROLL/RAD_TO_DEG); 
 
 

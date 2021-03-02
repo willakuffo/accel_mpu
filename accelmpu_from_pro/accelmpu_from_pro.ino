@@ -30,7 +30,6 @@ void setup() {
   Serial.print("GYRO_OFFSET_Z:");Serial.println(GYRO_OFFSET_Z);
   Serial.println("_GYRO callibration complete_");
   
-  
   acc_mean_filter_callibrate(10000);
   Serial.println("Callibrating accelerometer mean filters...");
   Serial.print("ACCEL_MEAN_X:");Serial.print(ACCEL_MEAN_X);
@@ -221,9 +220,25 @@ Serial.print(IMU_vel_z);Serial.print(" ");//fn[22]
 //Serial.print("\tdist: ");
 Serial.print(IMU_dist_x);Serial.print(" ");//fn[23]
 Serial.print(IMU_dist_y);Serial.print(" ");//fn[24]
-Serial.println(IMU_dist_z);//fn[25]
+Serial.print(IMU_dist_z);Serial.print(" ");//fn[25]
 #endif
 #endif
+
+#ifdef CHNG_IMU_DIST_VEL
+#ifdef PRINT_CHNG_IMU_DIST_VEL
+//Serial.print("\tvel: ");
+Serial.print(chng_velx);Serial.print(" ");//fn[26]
+Serial.print(chng_vely);Serial.print(" ");//fn[27]
+Serial.print(chng_velz);Serial.print(" ");//fn[28]
+//Serial.print("\tdist: ");
+Serial.print(chng_distx);Serial.print(" ");//fn[29]
+Serial.print(chng_disty);Serial.print(" ");//fn[30]
+Serial.println(chng_distz);//fn[31]
+#endif
+#endif
+
+
+
 /*
 #ifdef LINEAR_ACC
 linear_acc();

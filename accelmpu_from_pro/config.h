@@ -57,14 +57,19 @@ DEPENDENCY: None                                                        */
 //#define PRINT_TEMP //print output of temp
 
 /*uncomment to read travel from starting point (avgx,avgy,avgz)
-DEPENDENCY: ULTRASONIC                                                 */
+DEPENDENCY: ULTRASONIC                                                  */
 #define TRAVEL
 #define PRINT_TRAVEL //print output of travel
 
 /*compute 3-axis velocity and 3-axis position
-DEPENDENCY: ACCEL_AS_MS*/
+DEPENDENCY: ACCEL_AS_MS                                                 */
 #define IMU_DIST_VEL 
 #define PRINT_IMU_DIST_VEL //print IMU_DIST_VEL output
+
+/*compute change in 3-axis magnitude of velocity and distance from the IMU
+DEPENDENCY: IMU_DIST_VEL                                                */
+#define CHNG_IMU_DIST_VEL
+#define PRINT_CHNG_IMU_DIST_VEL
 
 
 /*compute 3-axis linear acc
