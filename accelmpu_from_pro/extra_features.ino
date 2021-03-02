@@ -25,7 +25,6 @@ void angle_from_accel(){
   COM_ROLL = 0.96* gyro_angle_roll + 0.04*roll;
   COM_YAW = gyro_angle_yaw;
   
-
   //recallibrate gyro if drift is more than 10 degrees
   //if(abs(COM_PITCH-pitch)>10){recallibrate_gyro_x();Serial.println("rp");}
   //if(abs(COM_ROLL-roll)>10){recallibrate_gyro_y();Serial.println("rr");}
