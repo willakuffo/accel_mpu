@@ -43,7 +43,7 @@ DEPENDENCY: None                                                        */
 therefore dependent on GYRO_AS_DEG. Use with GYRO_AS_DEG, therefore uncomment GYRO_AS_DEG
 DEPENDENCY: GYRO_AS_DEG                                                       */
 #define GYRO_ANGLE //read gyro angles in degrees dependent on GYRO_AS_DEG
-#define PRINT_GYRO_ANGLE //print output of GYRO_ANGLE 
+//#define PRINT_GYRO_ANGLE //print output of GYRO_ANGLE 
 
 /*This is a complimentary filter using 96% of GYRO angles and 4% of ACCEL angles. GYRO is not reliable in long term but in short term.
 ACCEL is reliable in long term but not in short term. Removes noise and smoothens out the angle signal. Best of both worlds :)
@@ -66,10 +66,14 @@ DEPENDENCY: ACCEL_AS_MS                                                 */
 #define IMU_DIST_VEL 
 #define PRINT_IMU_DIST_VEL //print IMU_DIST_VEL output
 
-/*compute change in 3-axis magnitude of velocity and distance from the IMU
+/*compute and print change in 3-axis magnitude of velocity and distance from the IMU
 DEPENDENCY: IMU_DIST_VEL                                                */
-#define CHNG_IMU_DIST_VEL
 #define PRINT_CHNG_IMU_DIST_VEL
+
+
+/*compute and print magnitude change in 3-axis acc
+DEPENDENCY: ACCEL_AS_MS*/
+#define PRINT_CHNG_ACCEL
 
 
 /*compute 3-axis linear acc

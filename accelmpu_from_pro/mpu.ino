@@ -23,7 +23,13 @@ void accel_as_raw(){
 }
 
 void accel_as_ms(){
-  
+        static float previous_axp = 0;
+        static float previous_ayp = 0;
+        static float previous_azp = 0; 
+
+        previous_axp = axp; previous_ayp = ayp; previous_azp = azp;//assign previous 3-axis acc
+
+        //get current 3-axis acc
         axp = mpu.getAccelerationX();
         ayp = mpu.getAccelerationY();
         azp = mpu.getAccelerationZ();//-ve because IMU is upside down (make z +ve)
@@ -31,6 +37,14 @@ void accel_as_ms(){
         axp = (axp/ACCEL_SENSITIVITY)*GRAVITY;
         ayp = (ayp/ACCEL_SENSITIVITY)*GRAVITY;
         azp = (azp/ACCEL_SENSITIVITY)*GRAVITY;
+
+        //calc this 3-axis accel chng after accel mean filter callibration
+        if(calc_accel_chng){//apply mean filter to smoothen and reduce drift
+          axp = axp-ACCEL_MEAN_X; 
+          ayp = ayp-ACCEL_MEAN_Y;
+          azp = azp-(ACCEL_MEAN_Z+GRAVITY);//+ because IMU is upside downnn
+
+        chng_axp = axp - previous_axp; chng_ayp = ayp - previous_ayp; chng_azp = azp - previous_azp;}
           
   }
 
@@ -101,7 +115,8 @@ void temperature(){
     ACCEL_MEAN_X = sax/sample;
     ACCEL_MEAN_Y = say/sample;
     ACCEL_MEAN_Z = saz/sample;
-    //calc mean offset accel  
+    calc_accel_chng = true;// after mean filter constants have been derived
+    //calc mean offset accel 
   
   
   

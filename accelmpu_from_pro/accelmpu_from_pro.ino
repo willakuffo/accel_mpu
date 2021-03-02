@@ -15,7 +15,7 @@ float elapsed_time = 0;
 
 void setup() {
   
- Serial.begin(9600);
+ Serial.begin(115200);
  mpu_setup();
  ultrasonic_3d_setup();
  Serial.println(mpu_ready ?"MPU connection true":"mpu connection failure");
@@ -130,10 +130,6 @@ Serial.print(unangled_pos);
 
 #ifdef ACCEL_AS_MS
 accel_as_ms();
-axp = axp-ACCEL_MEAN_X;
-ayp = ayp-ACCEL_MEAN_Y;
-azp = azp-(ACCEL_MEAN_Z+GRAVITY);//+ because IMU is upside downnn
-
 #ifdef PRINT_ACCEL_AS_MS
 //Serial.print("\tacc[m/s]:");
 Serial.print(axp); Serial.print(" "); //fn[5] 
@@ -224,7 +220,7 @@ Serial.print(IMU_dist_z);Serial.print(" ");//fn[25]
 #endif
 #endif
 
-#ifdef CHNG_IMU_DIST_VEL
+
 #ifdef PRINT_CHNG_IMU_DIST_VEL
 //Serial.print("\tvel: ");
 Serial.print(chng_velx);Serial.print(" ");//fn[26]
@@ -233,10 +229,15 @@ Serial.print(chng_velz);Serial.print(" ");//fn[28]
 //Serial.print("\tdist: ");
 Serial.print(chng_distx);Serial.print(" ");//fn[29]
 Serial.print(chng_disty);Serial.print(" ");//fn[30]
-Serial.println(chng_distz);//fn[31]
-#endif
+Serial.print(chng_distz);Serial.print(" ");//fn[31]
 #endif
 
+
+#ifdef PRINT_CHNG_ACCEL
+Serial.print(chng_axp);Serial.print(" ");//fn[32]
+Serial.print(chng_ayp);Serial.print(" ");//fn[33]
+Serial.println(chng_azp);//fn[34]
+#endif
 
 
 /*

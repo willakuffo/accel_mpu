@@ -10,7 +10,6 @@ float GYRO_OFFSET_X;
 float GYRO_OFFSET_Y;
 float GYRO_OFFSET_Z;
 
-
 float ACCEL_MEAN_X ;
 float ACCEL_MEAN_Y ;
 float ACCEL_MEAN_Z ;
@@ -27,6 +26,9 @@ float gyro_rate_ymin = 0;
 float gyro_rate_xmax = 0;
 float gyro_rate_xmin = 0;
 
+float chng_axp,chng_ayp,chng_azp; //3-axis accel magnitude change
+bool calc_accel_chng = false; //whether to calc immediate above. Ensures that mean filter constants are not affected or miscalulated because this is in accel_as_ms
+
 
 void accel_as_raw(); //accel raw
 void accel_as_ms(); ///accel m/s
@@ -35,7 +37,6 @@ void gyro_as_raw(); //gyro raw vals
 void mpu_setup(); //set up mpu6050 on addr 0x68
 void temperature();//get temp from mpu
 void gyro_offset_callibrate(int);//callibrate gyro offsets
-
- void acc_mean_filter_callibrate(int); //callibrate accelerometer mean filters
+void acc_mean_filter_callibrate(int); //callibrate accelerometer mean filters
 
 #endif
