@@ -71,9 +71,9 @@ class serialstream:
 			record.close()	
 	
 
-if __name__ =='__main__':#
-	S = serialstream()
-	expected_feature_size = 25
+if __name__ =='__main__':
+	S = serialstream(baudrate = 115200)
+	expected_feature_size = 34
 	keys = list(np.zeros([1,expected_feature_size])[0]) #init keys
 	keys[0] = 'time'
 	keys[1] = 'dt'
@@ -100,6 +100,15 @@ if __name__ =='__main__':#
 	keys[22] = 'IMU_dist_x'
 	keys[23] = 'IMU_dist_y'
 	keys[24] = 'IMU_dist_z'
+	keys[25] = 'chng_velx'
+	keys[26] = 'chng_vely'
+	keys[27] = 'chng_velz'
+	keys[28] = 'chng_distx'
+	keys[29] = 'chng_disty'
+	keys[30] = 'chng_distz'
+	keys[31] = 'chng_axp'
+	keys[32] = 'chng_ayp'
+	keys[33] = 'chng_azp'
 
 	while True:
 		try:
