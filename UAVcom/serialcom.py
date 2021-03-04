@@ -12,7 +12,7 @@ class serialstream:
 		self.data = None
 		self.data_len = None
 
-		self.record_file_base_name = 'UAV_episode'
+		self.record_file_base_name = 'flight_data/UAV_episode'
 		self.episode_record = [] #list()
 		#while True:
 		#	if self.c.in_waiting>0:print(self.c.readline())
@@ -50,19 +50,27 @@ class serialstream:
 				elif not format: return self.data #return unformatted option	
 		#if exception, try to handle
 		except serial.serialutil.SerialException:
+			del self.connection
+			self.connection = serial.Serial(self.port,baudrate = self.baudrate)
 			print('serial_exc')
 			pass
 
 		except OSError:
-			print('OSerror')
-			try:
-				#self.connection.flush()
-				self.connection = serial.Serial(self.port,baudrate = self.baudrate)
-				print('reinit')
-			except:
-				self.connection.flush()
-				self.connection = serial.Serial(self.port,baudrate = self.baudrate)
-				print('reinit2')
+			#try:
+			#	#self.connection.flush()
+			del self.connection	
+			self.connection = serial.Serial(self.port,baudrate = self.baudrate)
+			print('OSerror - Handled')
+			#	
+			#	#print('reinit')
+			#except:
+			#	#self.connection.flush()
+			#	#self.connection = serial.Serial(self.port,baudrate = self.baudrate)
+			#	#print('reinit2')
+		except SyntaxError:
+			pass
+			print('Syntax Error - Handled')
+
 
 	def save_episode(self):
 		'''save recorded data -> state variables of UAV flight'''
@@ -120,7 +128,7 @@ if __name__ =='__main__':
 			save = input('Save this flight episode [y/n]?')
 			if save.lower() == 'y':
 				S.save_episode()
-				print('Done!')
+				print('Done!, recorded',len(S.episode_record),'samples')
 			else:
 				print('discarded episode.')
 			break
