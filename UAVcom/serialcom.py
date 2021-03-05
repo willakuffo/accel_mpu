@@ -3,16 +3,19 @@ import pickle
 import os
 from datetime import datetime
 import numpy as np
+import sys
+import time
 
 class serialstream:
-	def __init__(self,port = '/dev/ttyS0',baudrate = 9600):
+	def __init__(self,port = '/dev/ttyS0',baudrate = 9600,flight_category = None):
 		self.port = port
 		self.baudrate = baudrate
+		self.flight_category = flight_category
 		self.connection = serial.Serial(self.port,baudrate = self.baudrate)
 		self.data = None
 		self.data_len = None
-
-		self.record_file_base_name = 'flight_data/UAV_episode'
+		if self.flight_category is None: self.record_file_base_name = 'flight_data/UAV_episode'
+		else:self.record_file_base_name = 'flight_data/'+self.flight_category+'/UAV_episode'
 		self.episode_record = [] #list()
 		#while True:
 		#	if self.c.in_waiting>0:print(self.c.readline())
@@ -77,10 +80,30 @@ class serialstream:
 		with open(self.record_file_base_name+str(datetime.today())+'.pickle','wb') as record:
 			pickle.dump(self.episode_record,record)
 			record.close()	
-	
+
+	def save_interract(self,flight_category):		
+		print('Saving flight episode...')
+		save = input('Save this flight episode [y/[n]]?:')
+		if save.lower() == 'y':
+			S.save_episode()
+			if flight_category is None: flight_category = 'No specified flight_category'
+			print('['+flight_category+']','Done!, recorded',len(self.episode_record),'samples under',self.flight_category)
+			print('flight data saved at',os.path.join(os.getcwd(),self.record_file_base_name.rstrip('UAV_episode')))	
+		else:
+			print('discarded episode.')
+				
 
 if __name__ =='__main__':
-	S = serialstream(baudrate = 115200)
+	flight_category = None
+	try:	
+		flight_category = sys.argv[1]
+		samples = sys.argv[2] #no of samples to collect
+	
+	except IndexError: #if no parameters are given in shell
+		print('collecting infinite samples to',os.path.join(os.getcwd(),'flight_data'))
+		time.sleep(3)
+		pass
+	S = serialstream(baudrate = 115200,flight_category  = flight_category)
 	expected_feature_size = 34
 	keys = list(np.zeros([1,expected_feature_size])[0]) #init keys
 	keys[0] = 'time'
@@ -124,12 +147,11 @@ if __name__ =='__main__':
 			if data is not None:
 				print(data,len(data))
 		except KeyboardInterrupt:
-			print('Saving flight episode...')
-			save = input('Save this flight episode [y/n]?')
-			if save.lower() == 'y':
-				S.save_episode()
-				print('Done!, recorded',len(S.episode_record),'samples')
-			else:
-				print('discarded episode.')
+			S.save_interract(flight_category)
 			break
+		
+		if samples is not None:
+			if len(S.episode_record) >= eval(samples):
+				S.save_interract(flight_category)
+				break
     			
