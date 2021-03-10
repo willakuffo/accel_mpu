@@ -9,6 +9,7 @@
 #define ZTRIG 2
 #define ZECHO 3
 
+float tf = 0.2;
 int distance,duration;
 void SonarSensor(int trigPin,int echoPin);
 void ultrasonic_3d_setup();
