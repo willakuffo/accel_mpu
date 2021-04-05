@@ -1,10 +1,15 @@
+
+import sys
+import os
+sys.path.insert(0,os.path.join(os.getcwd().rstrip('/model'),'UAVcom'))
+import serialcom
 import tensorflow as tf
 import pickle 
 import numpy as np
 import time
 #load model scaler config
 scaler_config = None
-print()
+
 with open('scaler_config.pickle','rb') as c:
 	scaler_config = pickle.load(c)
 
@@ -47,5 +52,21 @@ st = time.time()
 print(infer(scale_input(np.ones([1,31]))))
 print('infer time:',time.time()-st)
 
+
 a = scale_input(np.zeros([1,31]))
 print(a,unscale_output(a))
+
+out_features = ['travel_x', 'travel_y', 'travel_z']
+in_features =  ['time','dt','accel_ms_x', 'accel_ms_y', 'accel_ms_z', 'accel_ang_x', 'accel_ang_y', 'gyro_deg_x', 'gyro_deg_y', 'gyro_deg_z',
+	 'gyro_ang_x', 'gyro_ang_y', 'gyro_ang_z', 'com_pitch', 'com_roll', 'com_yaw', 'IMU_vel_x', 'IMU_vel_y', 'IMU_vel_z', 'IMU_dist_x', 
+	 'IMU_dist_y', 'IMU_dist_z', 'chng_velx', 'chng_vely', 'chng_velz', 'chng_distx', 
+	 'chng_disty', 'chng_distz', 'chng_axp', 'chng_ayp', 'chng_azp']
+S = serialcom.serialstream(baudrate = 115200)
+print(S.keys)
+while True:
+	data = S.stream(format=True, format_type={}, keys=S.keys, expected_feature_size=34, record=False)
+	if data is not None:
+		input_data = np.reshape(np.array(list(dict((k,data[k]) for k in in_features).values())),(1,-1))
+		output_data = np.reshape(np.array(list(dict((k,data[k]) for k in out_features).values())),(1,-1))
+		predicted = unscale_output(infer(scale_input(input_data)))
+		print('true:', output_data,'          predicted:',predicted)

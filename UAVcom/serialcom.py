@@ -17,7 +17,44 @@ class serialstream:
 		if self.flight_category is None: self.record_file_base_name = 'flight_data/UAV_episode'
 		else:self.record_file_base_name = 'flight_data/'+self.flight_category+'/UAV_episode'
 		self.episode_record = [] #list()
-		#while True:
+		self.keys = keys = list(np.zeros([1,34])[0]) #init keys
+		keys[0] = 'time'
+		keys[1] = 'dt'
+		keys[2] = 'travel_x'
+		keys[3] = 'travel_y'
+		keys[4] = 'travel_z'
+		keys[5] = 'accel_ms_x'
+		keys[6] = 'accel_ms_y'
+		keys[7] = 'accel_ms_z'
+		keys[8] = 'accel_ang_x'
+		keys[9] = 'accel_ang_y'
+		keys[10] = 'gyro_deg_x'
+		keys[11] = 'gyro_deg_y'
+		keys[12] = 'gyro_deg_z'
+		keys[13] = 'gyro_ang_x'
+		keys[14] = 'gyro_ang_y'
+		keys[15] = 'gyro_ang_z'
+		keys[16] = 'com_pitch'
+		keys[17] = 'com_roll'
+		keys[18] = 'com_yaw'
+		keys[19] = 'IMU_vel_x'
+		keys[20] = 'IMU_vel_y'
+		keys[21] = 'IMU_vel_z'
+		keys[22] = 'IMU_dist_x'
+		keys[23] = 'IMU_dist_y'
+		keys[24] = 'IMU_dist_z'
+		keys[25] = 'chng_velx'
+		keys[26] = 'chng_vely'
+		keys[27] = 'chng_velz'
+		keys[28] = 'chng_distx'
+		keys[29] = 'chng_disty'
+		keys[30] = 'chng_distz'
+		keys[31] = 'chng_axp'
+		keys[32] = 'chng_ayp'
+		keys[33] = 'chng_azp'
+	
+	
+		#	while True:
 		#	if self.c.in_waiting>0:print(self.c.readline())
 
 
@@ -95,6 +132,7 @@ class serialstream:
 
 if __name__ =='__main__':
 	flight_category = None
+	samples = None
 	try:	
 		flight_category = sys.argv[1]
 		samples = sys.argv[2] #no of samples to collect
@@ -105,45 +143,9 @@ if __name__ =='__main__':
 		pass
 	S = serialstream(baudrate = 115200,flight_category  = flight_category)
 	expected_feature_size = 34
-	keys = list(np.zeros([1,expected_feature_size])[0]) #init keys
-	keys[0] = 'time'
-	keys[1] = 'dt'
-	keys[2] = 'travel_x'
-	keys[3] = 'travel_y'
-	keys[4] = 'travel_z'
-	keys[5] = 'accel_ms_x'
-	keys[6] = 'accel_ms_y'
-	keys[7] = 'accel_ms_z'
-	keys[8] = 'accel_ang_x'
-	keys[9] = 'accel_ang_y'
-	keys[10] = 'gyro_deg_x'
-	keys[11] = 'gyro_deg_y'
-	keys[12] = 'gyro_deg_z'
-	keys[13] = 'gyro_ang_x'
-	keys[14] = 'gyro_ang_y'
-	keys[15] = 'gyro_ang_z'
-	keys[16] = 'com_pitch'
-	keys[17] = 'com_roll'
-	keys[18] = 'com_yaw'
-	keys[19] = 'IMU_vel_x'
-	keys[20] = 'IMU_vel_y'
-	keys[21] = 'IMU_vel_z'
-	keys[22] = 'IMU_dist_x'
-	keys[23] = 'IMU_dist_y'
-	keys[24] = 'IMU_dist_z'
-	keys[25] = 'chng_velx'
-	keys[26] = 'chng_vely'
-	keys[27] = 'chng_velz'
-	keys[28] = 'chng_distx'
-	keys[29] = 'chng_disty'
-	keys[30] = 'chng_distz'
-	keys[31] = 'chng_axp'
-	keys[32] = 'chng_ayp'
-	keys[33] = 'chng_azp'
-
 	while True:
 		try:
-			data = S.stream(format = True,format_type = {},keys = keys,expected_feature_size = expected_feature_size,record = True)
+			data = S.stream(format = True,format_type = {},keys = S.keys,expected_feature_size = expected_feature_size,record = True)
 			if data is not None:
 				print(data,len(data))
 		except KeyboardInterrupt:
