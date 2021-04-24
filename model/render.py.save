@@ -1,0 +1,31 @@
+import numpy as np
+import streamlit as st
+import pandas as pd
+import random
+from plotly import graph_objects as go
+from collections import deque
+
+class Render:
+
+	def __init__(self):
+		d = pd.DataFrame({})
+		#self.fig = go.Figure()
+		pass
+
+	def make2d_out_vis(self,new_data):
+		#new_data = pd.DataFrame(np.array(new_data))
+		#self.plot.add_rows(new_data)
+		plot_bufferi = [] #deque(maxlen = 100)
+		plot_buffero = [] #deque(maxlen = 100)
+		plot_bufferi.append(new_data[0])
+		plot_buffero.append(new_data[1])
+		
+
+		fig = go.Figure()
+		fig.add_trace(go.Scatter(y = list(plot_bufferi),mode = 'lines',name = 'i'))
+		fig.add_trace(go.Scatter(y = list(plot_buffero),mode = 'lines',name = 'o'))
+		st.write(fig)
+R = Render()
+with st.empty():
+	while True:
+		#print(random.random())#		R.make2dvis()
