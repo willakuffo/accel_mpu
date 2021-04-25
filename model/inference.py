@@ -76,6 +76,6 @@ with st.empty():
 			predicted = unscale_output(infer(scale_input(input_data)))
 			print('true:', output_data,'          predicted:',predicted)
 			#st.write(predicted)
-			R.update_df(output_data,predicted)
-			R.make2d_out_vis(np.array([predicted[0][0],output_data[0][0]]))
+			#R.update_df(output_data,predicted)
+			#R.make2d_out_vis(np.array([predicted[0][0],output_data[0][0]]))
 			
