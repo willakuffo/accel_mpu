@@ -8,15 +8,17 @@ import pickle
 import numpy as np
 import time
 import render
+pred = []
+true = []
 
 #load model scaler config
 scaler_config = None
 
-with open('scaler_config.pickle','rb') as c:
+with open('scaler_config_1.pickle','rb') as c:
 	scaler_config = pickle.load(c)
 
 #init tflite interpreter and allocate tensors
-Interpreter = tf.lite.Interpreter(model_path = 'accel_mae_Nadam_model.tflite')
+Interpreter = tf.lite.Interpreter(model_path = 'accel_mae_Nadam_model_1.tflite')
 Interpreter.allocate_tensors()
 
 output_details = Interpreter.get_output_details()
@@ -69,13 +71,23 @@ R = render.Render()
 print(S.keys)
 with st.empty():
 	while True:
-		data = S.stream(format=True, format_type={}, keys=S.keys, expected_feature_size=34, record=False)
-		if data is not None:
-			input_data = np.reshape(np.array(list(dict((k,data[k]) for k in in_features).values())),(1,-1))
-			output_data = np.reshape(np.array(list(dict((k,data[k]) for k in out_features).values())),(1,-1))
-			predicted = unscale_output(infer(scale_input(input_data)))
-			print('true:', output_data,'          predicted:',predicted)
-			#st.write(predicted)
-			#R.update_df(output_data,predicted)
-			#R.make2d_out_vis(np.array([predicted[0][0],output_data[0][0]]))
-			
+		try:
+			data = S.stream(format=True, format_type={}, keys=S.keys, expected_feature_size=34, record=False)
+			if data is not None:
+				input_data = np.reshape(np.array(list(dict((k,data[k]) for k in in_features).values())),(1,-1))
+				output_data = np.reshape(np.array(list(dict((k,data[k]) for k in out_features).values())),(1,-1))
+				predicted = unscale_output(infer(scale_input(input_data)))
+				print('true:', output_data,'          predicted:',predicted)
+				pred.append(predicted[0])
+				true.append(output_data[0])
+				#st.write(predicted)
+				#R.update_df(output_data,predicted)
+				#R.make2d_out_vis(np.array([predicted[0][0],output_data[0][0]]))
+		except KeyboardInterrupt:
+			print('saving prediction experiment')
+			filename = input('filename: ')
+			with open(filename+'.pickle','wb') as p:
+				pickle.dump([true,pred],p)
+				p.close()
+			break
+
